@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+# Check if the pin has been exported to user space, if not, exports it.
+if [ ! -d /sys/class/gpio/gpio48 ]; then echo 48 > /sys/class/gpio/export; fi
+echo high > /sys/class/gpio/gpio48/direction	# Set BBB pin as output with a high value.
+printf 'Reseteando el mbed...\n'
+echo 0 > /sys/class/gpio/gpio48/value		# Set pin as low to reset the Mbed.
+sleep .2					# Wait 0.2 seconds.
+echo 1 > /sys/class/gpio/gpio48/value		# Set pins as high.
+echo 48 > /sys/class/gpio/unexport		# Unexport pin from user space.
